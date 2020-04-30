@@ -1,0 +1,16 @@
+image:
+  name: massiveinteractive/go-ci:2.0
+  username: $docker_user
+  password: $docker_user_pwd 
+
+pipelines:
+  default:
+    - step:
+        script:
+          - git config --global url.ssh://git@bitbucket.org/.insteadOf https://bitbucket.org/
+          - export GO111MODULE=on
+          - go mod tidy
+          - go mod vendor
+          - go build
+          - go test ./... -cover -race
+          - go vet ./...
